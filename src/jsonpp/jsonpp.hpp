@@ -1,17 +1,11 @@
 #ifndef JavaScriptObjectNotationPlusPlus_HeaderPlusPlus
 #define JavaScriptObjectNotationPlusPlus_HeaderPlusPlus
-#include <memory>
+
+#include "util/PImpl.hpp"
 
 namespace jsonpp
 {
-	namespace _ //private
-	{
-		template<typename D>
-		struct PImpl { struct Impl; };
-	}
-	struct Environment
-	: private                 _::PImpl<Environment>
-	, private std::unique_ptr<_::PImpl<Environment>::Impl>
+	struct Environment : private util::AutoPImpl<Environment>
 	{
 		//
 	};
