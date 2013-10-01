@@ -21,6 +21,9 @@ namespace util
 	: protected PImpl<Derived>
 	, protected std::unique_ptr<typename PImpl<Derived>::Impl>
 	{
+	protected:
+		using typename PImpl<Derived>::Impl;
+	public:
 		AutoPImpl(std::unique_ptr<Impl> &&p)
 		: std::unique_ptr<Impl>(p)
 		{
