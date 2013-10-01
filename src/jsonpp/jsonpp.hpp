@@ -7,7 +7,10 @@ namespace jsonpp
 {
 	struct Environment : private util::AutoPImpl<Environment>
 	{
+		Environment();
 		~Environment();
+	private:
+		using typename util::PImpl<Environment>::Impl;
 	};
 }
 

@@ -25,7 +25,7 @@ namespace util
 		using typename PImpl<Derived>::Impl;
 	public:
 		AutoPImpl(std::unique_ptr<Impl> &&p)
-		: std::unique_ptr<Impl>(p)
+		: std::unique_ptr<Impl>(std::move(p))
 		{
 			static_assert(std::is_base_of<AutoPImpl, Derived>::value,
 			              "Template parameter must be deriving class");
