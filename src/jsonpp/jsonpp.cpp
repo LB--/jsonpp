@@ -12,6 +12,7 @@ struct util::PImpl<jsonpp::Environment>::Impl
 	struct Value : public std::enable_shared_from_this<Value>
 	{
 		virtual ~Value() = 0;
+		bool operator==(Value const &);
 	};
 	struct BoolValue : public Value
 	{
@@ -31,11 +32,12 @@ struct util::PImpl<jsonpp::Environment>::Impl
 					auto const &a = it->second;
 					++it;
 					auto const &b = it->second;
-					r = (r && a == b);
+					r = (r && *a == *b);
 				}
 				return Value_t{new BoolValue{r}};
 			}
 		}
+		//
 	};
 };
 util::PImpl<jsonpp::Environment>::Impl::Value::~Value() = default;
