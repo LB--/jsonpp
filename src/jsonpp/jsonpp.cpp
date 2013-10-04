@@ -150,6 +150,42 @@ struct util::PImpl<jsonpp::Environment>::Impl
 				auto const &b = it->second;
 				return Value_t{new BoolValue{*a != *b}};
 			}
+		},
+		{{"<", {"*", "*"}}, [](Params_t &p) -> Value_t
+			{
+				auto it = p.begin();
+				auto const &a = it->second;
+				++it;
+				auto const &b = it->second;
+				return Value_t{new BoolValue{*a < *b}};
+			}
+		},
+		{{"<=", {"*", "*"}}, [](Params_t &p) -> Value_t
+			{
+				auto it = p.begin();
+				auto const &a = it->second;
+				++it;
+				auto const &b = it->second;
+				return Value_t{new BoolValue{*a <= *b}};
+			}
+		},
+		{{">", {"*", "*"}}, [](Params_t &p) -> Value_t
+			{
+				auto it = p.begin();
+				auto const &a = it->second;
+				++it;
+				auto const &b = it->second;
+				return Value_t{new BoolValue{*a > *b}};
+			}
+		},
+		{{">=", {"*", "*"}}, [](Params_t &p) -> Value_t
+			{
+				auto it = p.begin();
+				auto const &a = it->second;
+				++it;
+				auto const &b = it->second;
+				return Value_t{new BoolValue{*a >= *b}};
+			}
 		}
 	};
 };
