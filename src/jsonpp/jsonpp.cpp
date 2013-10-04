@@ -1,11 +1,44 @@
 #include "jsonpp.hpp"
 #include <json.h>
 #include <stdexcept>
+#include <vector>
+#include <map>
+#include <memory>
+#include "util/ordered_set.hpp"
 
 template<>
 struct util::PImpl<jsonpp::Environment>::Impl
 {
+	struct Value : public std::enable_shared_from_this<Value>
+	{
+		virtual ~Value() = 0;
+	};
+	struct BoolValue : public Value
+	{
+		BoolValue(bool);
+	};
+	using Value_t = std::shared_ptr<Value>;
+	using Overloads_t = std::pair<std::string, util::ordered_set<std::string>>;
+	using Params_t = std::map<std::string, Value_t>;
+	using Funcs_t = std::map<Overloads_t, std::function<Value_t (Params_t &)>>;
+	Funcs_t Funcs
+	{
+		{{"==", {"..."}}, [](Params_t &p) -> Value_t
+			{
+				bool r = false;
+				for(auto it = p.begin(); it != p.end(); )
+				{
+					auto const &a = it->second;
+					++it;
+					auto const &b = it->second;
+					r = (r && a == b);
+				}
+				return Value_t{new BoolValue{r}};
+			}
+		}
+	};
 };
+util::PImpl<jsonpp::Environment>::Impl::Value::~Value() = default;
 
 namespace jsonpp
 {
