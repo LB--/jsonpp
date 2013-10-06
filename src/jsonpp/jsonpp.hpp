@@ -5,7 +5,7 @@
 
 namespace jsonpp
 {
-	struct Environment : private util::AutoPImpl<Environment>
+	struct Environment final : private util::AutoPImpl<Environment>
 	{
 		Environment();
 		Environment(std::string const &json);

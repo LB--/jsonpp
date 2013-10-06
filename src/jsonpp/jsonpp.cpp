@@ -127,61 +127,65 @@ struct util::PImpl<jsonpp::Environment>::Impl
 	using Overloads_t = std::pair<std::string, util::ordered_set<std::string>>;
 	using Params_t = std::map<std::string, Value_t>;
 	using Funcs_t = std::map<Overloads_t, std::function<Value_t (Params_t &)>>;
-	Funcs_t Funcs
-	{
-		{{"==", {"..."}}, [](Params_t &p) -> Value_t
+	static Funcs_t const Funcs;
+	Funcs_t funcs;
+};
+util::PImpl<jsonpp::Environment>::Impl::Value::~Value() = default;
+
+util::PImpl<jsonpp::Environment>::Impl::Funcs_t const
+util::PImpl<jsonpp::Environment>::Impl::Funcs
+{
+	{{"==", {"..."}}, [](Params_t &p) -> Value_t
+		{
+			bool r = false;
+			for(auto it = p.begin(); it != p.end(); )
 			{
-				bool r = false;
-				for(auto it = p.begin(); it != p.end(); )
-				{
-					auto const &a = it->second;
-					++it;
-					auto const &b = it->second;
-					r = (r && *a == *b);
-				}
-				return Value_t{new BoolValue{r}};
-			}
-		},
-		{{"!=", {"*", "*"}}, [](Params_t &p) -> Value_t
-			{
-				auto it = p.begin();
 				auto const &a = it->second;
 				++it;
 				auto const &b = it->second;
-				return Value_t{new BoolValue{*a != *b}};
+				r = (r && *a == *b);
 			}
-		},
-		{{"<", {"1", "2"}}, [](Params_t &p) -> Value_t
-			{
-				auto const &a = p["1"];
-				auto const &b = p["2"];
-				return Value_t{new BoolValue{*a < *b}};
-			}
-		},
-		{{"<=", {"1", "2"}}, [](Params_t &p) -> Value_t
-			{
-				auto const &a = p["1"];
-				auto const &b = p["2"];
-				return Value_t{new BoolValue{*a <= *b}};
-			}
-		},
-		{{">", {"1", "2"}}, [](Params_t &p) -> Value_t
-			{
-				auto const &a = p["1"];
-				auto const &b = p["2"];
-				return Value_t{new BoolValue{*a > *b}};
-			}
-		},
-		{{">=", {"1", "2"}}, [](Params_t &p) -> Value_t
-			{
-				auto const &a = p["1"];
-				auto const &b = p["2"];
-				return Value_t{new BoolValue{*a >= *b}};
-			}
+			return Value_t{new BoolValue{r}};
 		}
-	};
+	},
+	{{"!=", {"*", "*"}}, [](Params_t &p) -> Value_t
+		{
+			auto it = p.begin();
+			auto const &a = it->second;
+			++it;
+			auto const &b = it->second;
+			return Value_t{new BoolValue{*a != *b}};
+		}
+	},
+	{{"<", {"0", "1"}}, [](Params_t &p) -> Value_t
+		{
+			auto const &a = p["0"];
+			auto const &b = p["1"];
+			return Value_t{new BoolValue{*a < *b}};
+		}
+	},
+	{{"<=", {"0", "1"}}, [](Params_t &p) -> Value_t
+		{
+			auto const &a = p["0"];
+			auto const &b = p["1"];
+			return Value_t{new BoolValue{*a <= *b}};
+		}
+	},
+	{{">", {"0", "1"}}, [](Params_t &p) -> Value_t
+		{
+			auto const &a = p["0"];
+			auto const &b = p["1"];
+			return Value_t{new BoolValue{*a > *b}};
+		}
+	},
+	{{">=", {"0", "1"}}, [](Params_t &p) -> Value_t
+		{
+			auto const &a = p["0"];
+			auto const &b = p["1"];
+			return Value_t{new BoolValue{*a >= *b}};
+		}
+	}
 };
-util::PImpl<jsonpp::Environment>::Impl::Value::~Value() = default;
 
 namespace jsonpp
 {
