@@ -151,39 +151,31 @@ struct util::PImpl<jsonpp::Environment>::Impl
 				return Value_t{new BoolValue{*a != *b}};
 			}
 		},
-		{{"<", {"*", "*"}}, [](Params_t &p) -> Value_t
+		{{"<", {"1", "2"}}, [](Params_t &p) -> Value_t
 			{
-				auto it = p.begin();
-				auto const &a = it->second;
-				++it;
-				auto const &b = it->second;
+				auto const &a = p["1"];
+				auto const &b = p["2"];
 				return Value_t{new BoolValue{*a < *b}};
 			}
 		},
-		{{"<=", {"*", "*"}}, [](Params_t &p) -> Value_t
+		{{"<=", {"1", "2"}}, [](Params_t &p) -> Value_t
 			{
-				auto it = p.begin();
-				auto const &a = it->second;
-				++it;
-				auto const &b = it->second;
+				auto const &a = p["1"];
+				auto const &b = p["2"];
 				return Value_t{new BoolValue{*a <= *b}};
 			}
 		},
-		{{">", {"*", "*"}}, [](Params_t &p) -> Value_t
+		{{">", {"1", "2"}}, [](Params_t &p) -> Value_t
 			{
-				auto it = p.begin();
-				auto const &a = it->second;
-				++it;
-				auto const &b = it->second;
+				auto const &a = p["1"];
+				auto const &b = p["2"];
 				return Value_t{new BoolValue{*a > *b}};
 			}
 		},
-		{{">=", {"*", "*"}}, [](Params_t &p) -> Value_t
+		{{">=", {"1", "2"}}, [](Params_t &p) -> Value_t
 			{
-				auto it = p.begin();
-				auto const &a = it->second;
-				++it;
-				auto const &b = it->second;
+				auto const &a = p["1"];
+				auto const &b = p["2"];
 				return Value_t{new BoolValue{*a >= *b}};
 			}
 		}
