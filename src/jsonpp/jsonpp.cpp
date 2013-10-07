@@ -129,6 +129,8 @@ struct util::PImpl<jsonpp::Environment>::Impl
 	using Funcs_t = std::map<Overloads_t, std::function<Value_t (Params_t &)>>;
 	static Funcs_t const Funcs;
 	Funcs_t funcs;
+
+	//
 };
 util::PImpl<jsonpp::Environment>::Impl::Value::~Value() = default;
 
@@ -183,6 +185,14 @@ util::PImpl<jsonpp::Environment>::Impl::Funcs
 			auto const &a = p["0"];
 			auto const &b = p["1"];
 			return Value_t{new BoolValue{*a >= *b}};
+		}
+	},
+	{{"infix", {"L", "op", "R"}}, [](Params_t &p) -> Value_t
+		{
+			auto const &a  = p["L"];
+			auto const &op = p["op"];
+			auto const &b  = p["R"];
+			//
 		}
 	}
 };
